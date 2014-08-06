@@ -28,8 +28,8 @@ namespace MefProtype
         private void RegisterMefParts()
         {
             var conventions = new RegistrationBuilder();
-            conventions.ForTypesDerivedFrom<IValidateEntity<Person>>().Export<IValidateEntity<Person>>();
-            conventions.ForType<MainWindow>().ImportProperty(x => x.PersonValidator);
+            //conventions.ForTypesDerivedFrom<IValidateEntity<Person>>().Export<IValidateEntity<Person>>();
+            conventions.ForType<MainWindow>().ImportProperty(x => x.PersonValidator, y => y.AsContractName("abc")); // contract with name
 
             Assembly businessAssembly = typeof (IValidateEntity<>).Assembly;
             var catalog = new AggregateCatalog();
@@ -37,8 +37,8 @@ namespace MefProtype
             catalog.Catalogs.Add(new AssemblyCatalog(businessAssembly, conventions));
 
             _container = new CompositionContainer(catalog,
-                                      CompositionOptions.DisableSilentRejection |
-                                      CompositionOptions.IsThreadSafe);
+                                                  CompositionOptions.DisableSilentRejection |
+                                                  CompositionOptions.IsThreadSafe);
 
             try
             {
